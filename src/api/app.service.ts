@@ -13,19 +13,12 @@ export default class Application {
     app.useGlobalFilters(new AllExceptionsFilter());
     app.use(cookieParser());
     app.enableCors({
-      origin: [
-        'http://localhost:5173', 
-        'http://localhost:3000',
-        'http://localhost:8080',
-        'https://ilyosbekibroximov.uz',
-        'http://ilyosbekibroximov.uz',
-        'https://another-allowed-origin.com',
-        '*'
-      ],
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      origin: (origin, callback) => {
+        callback(null, origin);
+      },
       credentials: true,
-    });
-
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    }); 
 
     app.useGlobalPipes(
       new ValidationPipe({
