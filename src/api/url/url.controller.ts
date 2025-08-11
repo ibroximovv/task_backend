@@ -23,11 +23,14 @@ export class UrlController {
   @Get(':shortCode')
   async redirect(@Param('shortCode') shortCode: string, @Res() res: Response) {
     const url = await this.urlService.redirect(shortCode);
-    if (!url) return res.status(404).json({ message: 'Not found' });
+    if (!url) {
+      return res.status(404).json({ message: 'Not found' });
+    }
 
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-    res.redirect(url.originalUrl);
+    return res.json({
+      redirectUrl: url.originalUrl,
+      message: 'Redirect URL found'
+    });
   }
 
   @ApiBearerAuth()
